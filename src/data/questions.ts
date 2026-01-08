@@ -10,10 +10,10 @@ import {
   Cat,
   Stethoscope,
   BedDouble,
+  Repeat,
   LucideIcon,
 } from "lucide-react";
 
-// Added 'export' to all interfaces so they can be imported in your Form component
 export interface FormOption {
   label: string;
   value: string;
@@ -23,6 +23,7 @@ export interface FormOption {
 export interface FormField {
   id: string;
   placeholder: string;
+  type?: string;
 }
 
 export interface FormStep {
@@ -39,7 +40,6 @@ export interface FormConfig {
 }
 
 export const FORM_CONFIG: FormConfig = {
-  // Ensure this is set in your .env.local file
   webhookUrl: process.env.NEXT_PUBLIC_N8N_WEBHOOK || "",
   steps: [
     {
@@ -56,26 +56,38 @@ export const FORM_CONFIG: FormConfig = {
     },
     {
       id: "frequency",
-      question: "How often would you like us to visit?",
+      question: "How often do you need the service?",
       type: "choice",
       options: [
         { label: "One-off", value: "One-off", icon: CheckCircle2 },
-        { label: "Weekly", value: "Weekly", icon: Calendar },
+        { label: "Weekly", value: "Weekly", icon: Repeat },
         { label: "Fortnightly", value: "Fortnightly", icon: Calendar },
       ],
     },
     {
       id: "propertyDetails",
-      question: "Tell us a bit about your property",
+      question: "Tell us a bit about the property",
       type: "text",
       fields: [
-        { id: "bedrooms", placeholder: "Number of Bedrooms" },
+        { id: "bedrooms", placeholder: "Number of bedrooms" },
         { id: "bathrooms", placeholder: "Number of Bathrooms" },
       ],
     },
     {
-      id: "additionalInfo",
-      question: "Any specific requirements?",
+      id: "history",
+      question: "When was your last professional clean?",
+      type: "text",
+      fields: [
+        {
+          id: "lastCleanDate",
+          placeholder: "Last time you had a cleaner",
+          type: "date",
+        },
+      ],
+    },
+    {
+      id: "requirements",
+      question: "Specific Requirements",
       type: "choice",
       options: [
         { label: "I have Pets", value: "pets_yes", icon: Cat },
@@ -85,7 +97,7 @@ export const FORM_CONFIG: FormConfig = {
           icon: Stethoscope,
         },
         { label: "Need Bed Changes", value: "beds_yes", icon: BedDouble },
-        { label: "Standard Clean", value: "none", icon: CheckCircle2 },
+        { label: "No Extra Needs", value: "standard", icon: CheckCircle2 },
       ],
     },
     {
@@ -93,20 +105,28 @@ export const FORM_CONFIG: FormConfig = {
       question: "How soon do you need us?",
       type: "choice",
       options: [
-        { label: "ASAP", value: "asap", icon: Clock },
-        { label: "This Week", value: "this_week", icon: Calendar },
-        { label: "Just a Quote", value: "later", icon: Calendar },
+        { label: "As soon as possible (ASAP)", value: "asap", icon: Clock },
+        { label: "Within the next week", value: "next_week", icon: Calendar },
+        { label: "Just looking for a quote", value: "later", icon: Calendar },
       ],
     },
     {
-      id: "finalDetails",
-      question: "Where should we send your quote?",
-      type: "text", // Note: The form component handles phone validation internally
+      id: "contactDetails",
+      question: "Who should we send the quote to?",
+      type: "text",
       fields: [
         { id: "fullName", placeholder: "Full Name" },
-        { id: "email", placeholder: "Email Address" },
-        { id: "phone", placeholder: "UK Phone Number (e.g. 07123 456789)" },
-        { id: "address", placeholder: "Full Address & Postcode" },
+        { id: "email", placeholder: "Email" },
+        { id: "phone", placeholder: "Phone (e.g. +44...)" },
+      ],
+    },
+    {
+      id: "locationDetails",
+      question: "Where is the property located?",
+      type: "text",
+      fields: [
+        { id: "fullAddress", placeholder: "Full Address" },
+        { id: "postcode", placeholder: "Postcode" },
       ],
     },
   ],
