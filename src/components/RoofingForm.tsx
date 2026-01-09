@@ -60,26 +60,37 @@ export default function RoofingForm() {
         return false;
       }
 
-      // 3. Robust Phone Validation (Handles 07... -> +44 automatically)
+      // 3. Robust Phone Validation (Supports UK and Pakistan)
       if (field.id === "phone") {
         try {
-          const phoneNumber = parsePhoneNumber(stringVal, "GB");
+          // Remove spaces/dashes so 07700 900 123 becomes 07700900123
+          const cleanNumber = stringVal.replace(/[\s\-()]/g, "");
 
-          if (!phoneNumber || !phoneNumber.isValid()) {
-            setError("Please enter a valid UK mobile number");
+          // We try to parse. If it starts with +92, it uses PK logic.
+          // If it starts with 07 or 01, it uses GB logic.
+          const phoneNumber = parsePhoneNumber(cleanNumber, "GB");
+
+          // Validate that it's a real number in either UK or Pakistan
+          const isValidUK =
+            phoneNumber?.country === "GB" && phoneNumber.isValid();
+          const isValidPK =
+            phoneNumber?.country === "PK" && phoneNumber.isValid();
+
+          if (!phoneNumber || (!isValidUK && !isValidPK)) {
+            setError("Please enter a valid UK or Pakistan phone number");
             return false;
           }
 
-          // phoneNumber.number converts 07123456789 into +447123456789
+          // Save in international format (e.g., +447700900123 or +923398787878)
           updatedData[field.id] = phoneNumber.number;
         } catch (e) {
-          setError("Invalid phone format. Try 07123 456789");
+          setError("Invalid format. Use 07... (UK) or +92... (PK)");
           return false;
         }
       }
     }
 
-    // Save the normalized data (with the +44 version) back to state
+    // Save the normalized data back to state
     setFormData(updatedData);
     setError(null);
     return true;
