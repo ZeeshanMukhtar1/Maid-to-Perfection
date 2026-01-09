@@ -1,7 +1,5 @@
 "use client";
-import AboutSection from "@/components/AboutSection";
 import ProcessSection from "@/components/ProcessSection";
-import ProjectGallery from "@/components/ProjectGallery";
 import Reviews from "@/components/Reviews";
 import RoofingForm from "@/components/RoofingForm";
 import TrustBadges from "@/components/TrustBadges";
@@ -25,8 +23,6 @@ export default function Home() {
       <div className="relative z-10 w-full">
         <Reviews />
         <ProcessSection />
-        <ProjectGallery />
-        <AboutSection />
       </div>
 
       {/* Footer / Trust Bar */}
