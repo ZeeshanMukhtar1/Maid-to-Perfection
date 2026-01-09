@@ -11,31 +11,30 @@ export interface Review {
 export const REVIEWS_DATA: Review[] = [
   {
     id: 1,
-    name: "Paul",
+    name: "Paula",
     rating: 5,
     date: "11 Sept 2025",
-    location: "TW20",
+    location: "London",
     content:
-      "Paul was very responsive, very helpful and turned up when he said he would. I have no hesitation in using them again and in recommending PMP.",
+      "Kayleigh was very responsive and the automated booking was seamless. The team turned up exactly when they said they would. Highly recommend Maid to Perfection!",
     source: "checkatrade",
   },
   {
     id: 2,
-    name: "Finbar O'Regan",
-    rating: 5, // stars count
+    name: "Fiona O'Regan",
+    rating: 5,
     date: "August 2025",
-    // main body text
     content:
-      "Paul is a great roofer and true to his word, he has helped us with anything we have asked and has even done a call out on his weekend.",
-    source: "google", //A small badge on the bottom right. We use logic to show a 'G' for Google or a 'C' for Checkatrade, matching the official platform colors
+      "Kayleigh runs a fantastic cleaning business. True to her word, she helped us with a deep clean on short notice and the personal touch is wonderful.",
+    source: "google",
   },
   {
     id: 3,
-    name: "Billiejo Beldom",
+    name: "Billy Beldom",
     rating: 5,
     date: "June 2025",
     content:
-      "I recently had a new roof installed by PMP Roofing and I'm extremely happy with the results. From start to finish, the team was professional and courteous.",
+      "I recently had an end-of-tenancy clean and I'm extremely happy. From the instant quote to the final result, the team was professional and courteous.",
     source: "google",
   },
   {
@@ -43,9 +42,9 @@ export const REVIEWS_DATA: Review[] = [
     name: "Sarah Jenkins",
     rating: 5,
     date: "Oct 2025",
-    location: "RG2",
+    location: "UK",
     content:
-      "Excellent communication throughout the project. The price was fair and the site was left spotless every single day.",
+      "Excellent communication and a very professional, friendly tone. The price was fair and my home was left spotless. The automated reminders are so helpful.",
     source: "checkatrade",
   },
 ];

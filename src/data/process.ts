@@ -1,4 +1,9 @@
-import { ClipboardCheck, Search, HardHat, ShieldCheck } from 'lucide-react';
+import {
+  ClipboardCheck,
+  Sparkles,
+  BellRing,
+  HeartHandshake,
+} from "lucide-react";
 
 export interface ProcessStep {
   id: number;
@@ -12,25 +17,29 @@ export const PROCESS_DATA: ProcessStep[] = [
   {
     id: 1,
     title: "Instant Quote",
-    description: "Fill out our smart form to receive a preliminary estimate within minutes.",
+    description:
+      "Submit our smart intake form and receive a tailored quote via WhatsApp or SMS in seconds.",
     icon: ClipboardCheck,
   },
   {
     id: 2,
-    title: "Free Inspection",
-    description: "Our experts visit your property to verify measurements and assess roof health.",
-    icon: Search,
+    title: "Seamless Booking",
+    description:
+      "Choose your preferred cleaning slot online. You'll receive instant confirmation and 24-hour reminders.",
+    icon: BellRing,
   },
   {
     id: 3,
-    title: "Expert Fitting",
-    description: "Our certified team installs your high-performance roofing system safely.",
-    icon: HardHat,
+    title: "Pro Cleaning",
+    description:
+      "Our DBS-checked cleaners check in automatically, ensuring they arrive on time, every time.",
+    icon: Sparkles,
   },
   {
     id: 4,
-    title: "Lifetime Support",
-    description: "Enjoy peace of mind with our industry-leading guarantee and aftercare.",
-    icon: ShieldCheck,
+    title: "Quality Guaranteed",
+    description:
+      "After every job, we confirm you are 100% happy. Any issues are escalated directly to Kayleigh.",
+    icon: HeartHandshake,
   },
 ];

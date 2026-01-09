@@ -205,9 +205,9 @@ export default function RoofingForm() {
   return (
     <div className="max-w-xl mx-auto px-4">
       {/* Mini Header */}
-      <div className="mb-8 text-center">
+      <div className="mb-8 text-center mt-5">
         <h1 className="text-2xl md:text-3xl font-black mb-4 uppercase tracking-tighter italic">
-          Roof <span className="text-brand">Savings</span> 2026
+          Maid To <span className="text-brand">Perfection</span>
         </h1>
         <div className="w-full bg-muted h-2 rounded-full overflow-hidden max-w-[250px] mx-auto border border-border">
           <motion.div
