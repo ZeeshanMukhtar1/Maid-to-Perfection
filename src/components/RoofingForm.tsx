@@ -58,7 +58,7 @@ export default function RoofingForm() {
         });
 
         if (!phoneNumber || !phoneNumber.isValid()) {
-          setError("Please enter a valid phone number (e.g., +923398787878)");
+          setError("Please enter a valid phone number");
           return false;
         }
 
