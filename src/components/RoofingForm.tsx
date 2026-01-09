@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import confetti from "canvas-confetti";
 import { FORM_CONFIG, FormStep } from "../data/questions";
+import parsePhoneNumber from "libphonenumber-js/max";
 
 type FormAnswers = Record<string, string | number | boolean>;
 
@@ -28,7 +29,7 @@ export default function RoofingForm() {
   const progress = ((stepIndex + 1) / FORM_CONFIG.steps.length) * 100;
 
   const validateStep = () => {
-    // If it's a button-click step, it's always valid
+    // Button / choice steps are always valid
     if (currentStep.type === "choice") return true;
 
     const fields = currentStep.fields || [];
@@ -37,33 +38,33 @@ export default function RoofingForm() {
       const val = formData[field.id];
       const stringVal = String(val || "").trim();
 
-      // 1. Basic Empty Check for all fields
-      // Allow 1 character if it's a number (like 1 bedroom), otherwise require 2+ characters
+      // 1️⃣ Basic empty / minimum length validation
       const isNumberField = field.id === "bedrooms" || field.id === "bathrooms";
       const minLength = isNumberField ? 1 : 2;
+
       if (stringVal.length < minLength) {
-        // Customizing the error message for better UX
-        const fieldName = field.placeholder.split("(")[0].toLowerCase(); // Cleans "Full Address (Street...)" to just "full address"
+        const fieldName = field.placeholder.split("(")[0].toLowerCase();
         setError(`Please enter your ${fieldName}`);
         return false;
       }
 
-      // 2. Specific UK Phone Validation
+      // 2️⃣ 🌍 International phone validation (ANY country)
       if (field.id === "phone") {
-        const ukPhoneRegex =
-          /^(?:(?:\(?(?:0(?:0|11)\)?[\s-]?\(?44\)?)|(?:\+?44))[\s-]?(?:\(?0\)?[\s-]?)?|(?:\(?0))(?:(?:\d{5}\)?[\s-]?\d{4,5})|(?:\d{4}\)?[\s-]?(?:\d{5}|\d{3}[\s-]?\d{3}))|(?:\d{3}\)?[\s-]?\d{3}[\s-]?\d{3,4})|(?:\d{2}\)?[\s-]?\d{4}[\s-]?\d{4}))(?:[\s-]?(?:x|ext\.?|#)\d{3,4})?$/;
+        const phoneNumber = parsePhoneNumber(stringVal, {
+          extract: false, // 👈 strict: entire input must be a phone number
+        });
 
-        // Strip spaces and dashes before testing the regex
-        const strippedPhone = stringVal.replace(/[\s-]/g, "");
-
-        if (!ukPhoneRegex.test(strippedPhone)) {
-          setError("Please enter a valid UK phone number");
+        if (!phoneNumber || !phoneNumber.isValid()) {
+          setError("Please enter a valid phone number");
           return false;
         }
+
+        // (Optional) normalize phone before submit
+        // formData.phone = phoneNumber.number; // E.164 format
       }
     }
 
-    // If we got here, all fields passed
+    // Everything passed
     setError(null);
     return true;
   };
