@@ -117,7 +117,7 @@ export const FORM_CONFIG: FormConfig = {
       fields: [
         { id: "fullName", placeholder: "Full Name" },
         { id: "email", placeholder: "Email" },
-        { id: "phone", placeholder: "Enter Valid Phone with country code" },
+        { id: "phone", placeholder: "Enter Valid Phone like 07xxx" },
       ],
     },
     {
