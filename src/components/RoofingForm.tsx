@@ -30,7 +30,7 @@ export default function RoofingForm() {
   const progress = ((stepIndex + 1) / FORM_CONFIG.steps.length) * 100;
 
   const validateStep = () => {
-    // 1. Validation for Multiple Choice (Ensure at least one is selected)
+    // 1. Validation for Multiple Choice
     if (currentStep.type === "multiple-choice") {
       const selections = (formData[currentStep.id] as string[]) || [];
       if (selections.length === 0) {
@@ -60,37 +60,40 @@ export default function RoofingForm() {
         return false;
       }
 
-      // 3. Robust Phone Validation (Supports UK and Pakistan)
+      // 3. Straightforward Phone Validation
       if (field.id === "phone") {
         try {
-          // Remove spaces/dashes so 07700 900 123 becomes 07700900123
+          // Remove all spaces and special characters
           const cleanNumber = stringVal.replace(/[\s\-()]/g, "");
 
-          // We try to parse. If it starts with +92, it uses PK logic.
-          // If it starts with 07 or 01, it uses GB logic.
+          // Parse with UK as default
           const phoneNumber = parsePhoneNumber(cleanNumber, "GB");
 
-          // Validate that it's a real number in either UK or Pakistan
-          const isValidUK =
-            phoneNumber?.country === "GB" && phoneNumber.isValid();
-          const isValidPK =
-            phoneNumber?.country === "PK" && phoneNumber.isValid();
+          // Simple check: Is it a possible UK or Pakistan number?
+          const isUK =
+            phoneNumber?.country === "GB" && phoneNumber.isPossible();
+          const isPK =
+            phoneNumber?.country === "PK" && phoneNumber.isPossible();
 
-          if (!phoneNumber || (!isValidUK && !isValidPK)) {
-            setError("Please enter a valid UK or Pakistan phone number");
+          if (!phoneNumber || (!isUK && !isPK)) {
+            setError("Please enter a valid phone number");
             return false;
           }
 
-          // Save in international format (e.g., +447700900123 or +923398787878)
-          updatedData[field.id] = phoneNumber.number;
+          // SAVE LOGIC:
+          // If it's UK (+44 or 07), save it as local 07 format
+          // If it's your Pakistan test number (+92), save as is
+          updatedData[field.id] =
+            phoneNumber.country === "GB"
+              ? phoneNumber.formatNational()
+              : phoneNumber.number;
         } catch (e) {
-          setError("Invalid format. Use 07... (UK) or +92... (PK)");
+          setError("Invalid phone format");
           return false;
         }
       }
     }
 
-    // Save the normalized data back to state
     setFormData(updatedData);
     setError(null);
     return true;
