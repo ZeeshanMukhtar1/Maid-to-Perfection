@@ -16,51 +16,38 @@
   --color-brand: var(--brand);
   --color-brand-foreground: var(--brand-foreground);
   
-  /* Radii for that premium rounded look */
   --radius-xl: var(--radius);
   --radius-2xl: calc(var(--radius) + 4px);
   --radius-3xl: calc(var(--radius) + 12px);
 }
 
-/* 3. LIGHT MODE (Default) */
+/* 3. SETTING GLOBAL THEME (Black & Gold) */
 :root {
   --radius: 1.5rem;
   
-  /* Soft Light Background */
-  --background: oklch(0.98 0 0); 
-  --foreground: oklch(0.145 0 0);
+  /* Deep Black Background */
+  --background: #000000; 
+  --foreground: #ffffff;
   
-  /* Pure White Card */
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
+  /* Dark Glass Cards */
+  --card: #0a0a0a;
+  --card-foreground: #ffffff;
   
-  /* Soft Grays */
-  --muted: oklch(0.95 0 0);
-  --muted-foreground: oklch(0.55 0 0);
-  --border: oklch(0.92 0 0);
+  /* Muted Accents */
+  --muted: #1a1a1a;
+  --muted-foreground: #a1a1aa;
+  --border: rgba(255, 255, 255, 0.1);
   
-  /* Professional Roofing Red */
-  --brand: oklch(0.577 0.245 27.325);
-  --brand-foreground: oklch(1 0 0);
+  /* CLASSIC GOLD - oklch(0.77 0.15 86) */
+  --brand: #D4AF37;
+  --brand-foreground: #000000;
 }
 
-/* 4. SOFT DARK MODE (The "Pro" Look) */
+/* Dark Mode Overrides (Optional: Keeping it dark by default) */
 .dark {
-  /* Deep Midnight Blue/Slate */
-  --background: oklch(0.12 0.02 250); 
-  --foreground: oklch(0.985 0 0);
-  
-  /* Glassmorphism Effect Card */
-  --card: oklch(0.18 0.02 250 / 0.85);
-  --card-foreground: oklch(0.985 0 0);
-  
-  /* Darker Accents */
-  --muted: oklch(0.25 0.02 250);
-  --muted-foreground: oklch(0.7 0 0);
-  --border: oklch(1 0 0 / 12%);
-  
-  /* Vibrant Dark Red */
-  --brand: oklch(0.62 0.22 28);
+  --background: #000000;
+  --card: #080808;
+  --brand: #D4AF37;
 }
 
 /* 5. Global Base Styles */
@@ -70,27 +57,22 @@
   }
   
   body {
-    @apply bg-background text-foreground antialiased selection:bg-brand selection:text-white;
+    @apply bg-black text-white antialiased selection:bg-brand selection:text-black;
     font-feature-settings: "ss01", "ss02", "cv01", "cv02";
   }
 
-  /* Custom styling for inputs to make them feel more premium */
-  input::placeholder {
-    @apply text-muted-foreground/40 font-medium;
-  }
-
-  /* Smooth scroll for the whole page */
   html {
     scroll-behavior: smooth;
+    background-color: black;
   }
 }
 
-/* 6. Custom Animations for the Form */
-@keyframes pulse-red {
+/* Updated Pulse for Gold */
+@keyframes pulse-gold {
   0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
+  50% { opacity: 0.6; }
 }
 
 .animate-brand-pulse {
-  animation: pulse-red 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  animation: pulse-gold 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }

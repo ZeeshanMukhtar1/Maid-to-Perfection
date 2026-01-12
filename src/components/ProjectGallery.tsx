@@ -11,41 +11,40 @@ export default function ProjectGallery() {
     null
   );
 
-  // Filter images to show: Either the main folders OR the children of the selected folder
   const displayData = selectedFolder
     ? [selectedFolder.imageUrl, ...(selectedFolder.children || [])]
     : GALLERY_DATA;
 
   return (
-    <section className="py-24 w-full max-w-6xl mx-auto px-4">
+    <section className="py-24 w-full max-w-6xl mx-auto px-4 bg-black">
       {/* Header Section */}
       <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
         <div className="max-w-2xl">
           <button
             onClick={() => setSelectedFolder(null)}
             className={`text-brand font-black uppercase tracking-[0.3em] text-xs mb-3 flex items-center gap-2 hover:opacity-70 transition-all cursor-pointer ${
-              !selectedFolder && "pointer-events-none"
+              !selectedFolder && "pointer-events-none opacity-50"
             }`}
           >
             {selectedFolder && <ArrowLeft size={14} />}
-            {selectedFolder ? "Back to Portfolio" : "Portfolio"}
+            {selectedFolder ? "Back to Portfolio" : "Our Excellence"}
           </button>
-          <h2 className="text-4xl md:text-6xl font-black uppercase italic tracking-tighter leading-none">
+          <h2 className="text-4xl md:text-6xl font-black uppercase italic tracking-tighter leading-none text-white">
             {selectedFolder ? (
               selectedFolder.title
             ) : (
               <>
                 OVER{" "}
                 <span className="text-brand">{GALLERY_STATS.projectCount}</span>{" "}
-                HOMES <br />
-                TRANSFORMED SINCE 2015
+                SPACES <br />
+                <span className="text-brand/80">PERFECTED</span> SINCE 2015
               </>
             )}
           </h2>
         </div>
 
         {!selectedFolder && (
-          <div className="bg-card border border-border p-4 rounded-2xl flex items-center gap-4 shadow-xl">
+          <div className="bg-card border border-white/10 p-4 rounded-2xl flex items-center gap-4 shadow-2xl">
             <div className="bg-brand/10 p-3 rounded-xl">
               <Star
                 className="text-brand"
@@ -54,11 +53,11 @@ export default function ProjectGallery() {
               />
             </div>
             <div>
-              <p className="text-2xl font-black italic">
+              <p className="text-2xl font-black italic text-white">
                 {GALLERY_STATS.rating}/5
               </p>
-              <p className="text-[10px] uppercase font-bold tracking-widest text-muted-foreground">
-                Based on {GALLERY_STATS.reviewCount} Reviews
+              <p className="text-[10px] uppercase font-bold tracking-widest text-gray-500">
+                {GALLERY_STATS.reviewCount} Premium Reviews
               </p>
             </div>
           </div>
@@ -75,7 +74,9 @@ export default function ProjectGallery() {
             const isFolderView = !selectedFolder;
             const imageUrl = typeof item === "string" ? item : item.imageUrl;
             const title =
-              typeof item === "string" ? `Image ${index + 1}` : item.title;
+              typeof item === "string"
+                ? `Project Detail ${index + 1}`
+                : item.title;
             const category =
               typeof item === "string"
                 ? selectedFolder?.category
@@ -88,11 +89,11 @@ export default function ProjectGallery() {
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ duration: 0.3 }}
+                transition={{ duration: 0.4 }}
                 onClick={() =>
                   isFolderView && setSelectedFolder(item as GalleryProject)
                 }
-                className={`group relative overflow-hidden rounded-[2rem] bg-card border border-border/50 aspect-[4/3] ${
+                className={`group relative overflow-hidden rounded-[2rem] bg-card border border-white/5 aspect-[4/3] ${
                   isFolderView ? "cursor-pointer" : "cursor-default"
                 }`}
               >
@@ -100,21 +101,29 @@ export default function ProjectGallery() {
                   src={imageUrl}
                   alt={title}
                   fill
-                  className="object-cover brightness-75 group-hover:brightness-90 transition-all duration-700 group-hover:scale-110"
+                  className="object-cover brightness-50 group-hover:brightness-75 transition-all duration-700 group-hover:scale-110"
                 />
 
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-80" />
+                {/* Premium Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-90 group-hover:opacity-80 transition-opacity" />
 
                 <div className="absolute bottom-0 left-0 right-0 p-8">
-                  <p className="text-brand font-black text-[10px] uppercase tracking-widest mb-1 flex items-center gap-2">
+                  <p className="text-brand font-black text-[10px] uppercase tracking-[0.2em] mb-1 flex items-center gap-2">
                     {isFolderView && <FolderOpen size={10} />}
                     {category}
                   </p>
+
+                  {/* {isFolderView ? (
+                    <h3 className="text-white font-bold uppercase italic text-lg tracking-tight">
+                      {(item as GalleryProject).title}
+                    </h3>
+                  ) : (
+                    <></>
+                  )} */}
+
                   {isFolderView && (
-                    <p className="text-white/50 text-[10px] uppercase font-bold mt-2">
-                      Click to view{" "}
-                      {(item as GalleryProject).children?.length || 0} more
-                      photos
+                    <p className="text-brand/60 text-[9px] uppercase font-black mt-2 tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">
+                      Click to expand +
                     </p>
                   )}
                 </div>
