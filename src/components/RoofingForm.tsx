@@ -13,7 +13,6 @@ import {
 } from "lucide-react";
 import confetti from "canvas-confetti";
 import { FORM_CONFIG, FormStep } from "../data/questions";
-import parsePhoneNumber from "libphonenumber-js/max";
 
 // Updated type to support arrays for multiple-choice
 type FormAnswers = Record<string, string | number | boolean | string[]>;
@@ -44,13 +43,13 @@ export default function RoofingForm() {
     if (currentStep.type === "choice") return true;
 
     const fields = currentStep.fields || [];
-    const updatedData = { ...formData };
 
     for (const field of fields) {
       const val = formData[field.id];
       const stringVal = String(val || "").trim();
 
       // Basic empty field validation
+      // Requirements: Numbers (beds/baths) min 1 char, others min 2
       const isNumberField = field.id === "bedrooms" || field.id === "bathrooms";
       const minLength = isNumberField ? 1 : 2;
 
@@ -59,42 +58,8 @@ export default function RoofingForm() {
         setError(`Please enter your ${fieldName}`);
         return false;
       }
-
-      // 3. Straightforward Phone Validation
-      if (field.id === "phone") {
-        try {
-          // Remove all spaces and special characters
-          const cleanNumber = stringVal.replace(/[\s\-()]/g, "");
-
-          // Parse with UK as default
-          const phoneNumber = parsePhoneNumber(cleanNumber, "GB");
-
-          // Simple check: Is it a possible UK or Pakistan number?
-          const isUK =
-            phoneNumber?.country === "GB" && phoneNumber.isPossible();
-          const isPK =
-            phoneNumber?.country === "PK" && phoneNumber.isPossible();
-
-          if (!phoneNumber || (!isUK && !isPK)) {
-            setError("Please enter a valid phone number");
-            return false;
-          }
-
-          // SAVE LOGIC:
-          // If it's UK (+44 or 07), save it as local 07 format
-          // If it's your Pakistan test number (+92), save as is
-          updatedData[field.id] =
-            phoneNumber.country === "GB"
-              ? phoneNumber.formatNational()
-              : phoneNumber.number;
-        } catch (e) {
-          setError("Invalid phone format");
-          return false;
-        }
-      }
     }
 
-    setFormData(updatedData);
     setError(null);
     return true;
   };
@@ -102,14 +67,12 @@ export default function RoofingForm() {
   const handleNext = async (value?: string) => {
     const updatedData = { ...formData };
 
-    // If a value is passed (single choice), save it
     if (value && currentStep.type === "choice") {
       updatedData[currentStep.id] = value;
     }
 
     setFormData(updatedData);
 
-    // Validate before moving (for text fields)
     if (!value && !validateStep()) return;
 
     if (stepIndex < FORM_CONFIG.steps.length - 1) {
@@ -313,7 +276,6 @@ export default function RoofingForm() {
                   );
                 })}
 
-                {/* Manual Continue button for multiple-choice */}
                 {currentStep.type === "multiple-choice" && (
                   <button
                     onClick={() => handleNext()}
