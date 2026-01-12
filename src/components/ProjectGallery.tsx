@@ -110,9 +110,6 @@ export default function ProjectGallery() {
                     {isFolderView && <FolderOpen size={10} />}
                     {category}
                   </p>
-                  <h3 className="text-xl font-black uppercase italic tracking-tighter text-white">
-                    {title}
-                  </h3>
                   {isFolderView && (
                     <p className="text-white/50 text-[10px] uppercase font-bold mt-2">
                       Click to view{" "}
